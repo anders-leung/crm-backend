@@ -98,7 +98,7 @@ describe('## Client APIs', () => {
 
   describe('# PUT /clients/:clientId', () => {
     it('should update client details', (done) => {
-      client.name = 'KK@ben-cpa.com';
+      client.name = 'KK@email.com';
       request(app)
         .put(`/clients/${client._id}`)
         .send(client)

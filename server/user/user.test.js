@@ -8,7 +8,7 @@ chai.config.includeStack = true;
 
 describe('## User APIs', () => {
   let user = {
-    email: 'KK123@ben-cpa.com',
+    email: 'KK123@email.com',
     password: '1234567890',
     role: 'Employee',
   };
@@ -58,7 +58,7 @@ describe('## User APIs', () => {
 
   describe('# PUT /users/:userId', () => {
     it('should update user details', (done) => {
-      user.email = 'KK@ben-cpa.com';
+      user.email = 'KK@email.com';
       request(app)
         .put(`/users/${user._id}`)
         .send(user)
@@ -97,7 +97,7 @@ describe('## User APIs', () => {
         .delete(`/users/${user._id}`)
         .expect(httpStatus.OK)
         .then((res) => {
-          expect(res.body.email).to.equal('KK@ben-cpa.com');
+          expect(res.body.email).to.equal('KK@email.com');
           expect(res.body.password).to.equal(user.password);
           expect(res.body.role).to.equal(user.role);
           done();

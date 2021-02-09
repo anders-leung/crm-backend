@@ -72,7 +72,7 @@ describe('## Contact APIs', () => {
 
   describe('# PUT /contacts/:contactId', () => {
     it('should update contact details', (done) => {
-      contact.name = 'KK@ben-cpa.com';
+      contact.name = 'KK@email.com';
       request(app)
         .put(`/contacts/${contact._id}`)
         .send(contact)
