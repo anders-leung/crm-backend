@@ -42,7 +42,12 @@ const get = (req, res) => res.json(req.client);
 
 const create = (req, res, next) => {
   const { body } = req;
-  const { _id } = body;
+  let { _id } = body;
+
+  if (!_id) {
+    const client = new Client();
+    _id = client._id;
+  }
 
   Client.findByIdAndUpdate(_id, body, { new: true, upsert: true })
     .then((result) => {
