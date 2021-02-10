@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const httpStatus = require('http-status');
 const APIError = require('../helpers/APIError');
 const Role = require('./role.model');
@@ -6,7 +5,6 @@ const Job = require('../job/job.model');
 
 const setupQuery = require('../helpers/setupQuery');
 
-const saltRounds = 10;
 
 /**
  * Create new role
@@ -21,7 +19,7 @@ const create = (req, res, next) => {
   role.access = access.split(',').map(route => route.trim());
 
   role.save()
-    .then(savedrole => res.json(savedrole))
+    .then(savedRole => res.json(savedRole))
     .catch(next);
 };
 
@@ -92,15 +90,12 @@ const load = (req, res, next, id) => {
  */
 const update = (req, res, next) => {
   const { role, body } = req;
+  const { access } = body;
+  if (access) body.access = access.split(',').map(route => route.trim());
 
-  bcrypt.hash(body.password || '', saltRounds)
-    .then((hash) => {
-      if (body.password) body.password = hash;
-      else delete body.password;
-      return Role.findByIdAndUpdate(role._id, body, { new: true })
-    })
-    .then((savedrole) => {
-      const result = savedrole.toObject()
+  Role.findByIdAndUpdate(role._id, body, { new: true })
+    .then((savedRole) => {
+      const result = savedRole.toObject();
       delete result.password; // eslint-disable-line no-param-reassign
       res.json(result);
     })
