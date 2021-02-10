@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const httpStatus = require('http-status');
+const APIError = require('../../helpers/APIError');
 const User = require('./user.model');
 const Role = require('../role/role.model');
 const Job = require('../job/job.model');
@@ -17,7 +19,11 @@ const create = (req, res, next) => {
   const { body } = req;
   const user = new User(body);
 
-  user.save()
+  bcrypt.hash(body.password, saltRounds)
+    .then((password) => {
+      user.password = password;
+      return user.save();
+    })
     .then(savedUser => res.json(savedUser))
     .catch(next);
 };
@@ -72,6 +78,9 @@ const load = (req, res, next, id) => {
   User.get(id)
     .then((user) => {
       req.user = user; // eslint-disable-line no-param-reassign
+      if (user._id.toString() === '6024355c5a357216305590d5') {
+        throw new APIError('Cannot modify admin user', httpStatus.BAD_REQUEST, true);
+      }
       return next();
     })
     .catch(e => next(e));
