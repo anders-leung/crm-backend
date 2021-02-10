@@ -86,11 +86,11 @@ const options = (req, res, next) => {
   ];
 
   Promise.all(promises)
-    .then(([clients, groups, users, options]) => {
+    .then(([clients, groups, users, allOptions]) => {
       data.clients = clients.map(client => ({ label: client.clientName, value: client._id }));
       data.groups = groups;
       data.users = users.map(user => ({ label: user.initials, value: user._id }));
-      options.forEach((option) => {
+      allOptions.forEach((option) => {
         const { _id, name, type } = option;
         const key = `${type.toLowerCase()}s`;
         data[key] = (data[key] || []).concat({ label: name, value: _id });

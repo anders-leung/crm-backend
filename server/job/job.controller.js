@@ -68,7 +68,7 @@ const update = (req, res, next) => {
 
       return null;
     })
-    .then((result) => res.json(result || job))
+    .then(result => res.json(result || job))
     .catch(next);
 };
 

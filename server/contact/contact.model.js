@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const getter = require('../helpers/getter');
-const Address = require('../address/address.model');
 
 const Schema = mongoose.Schema;
 const ContactSchema = new Schema({
@@ -11,7 +10,7 @@ const ContactSchema = new Schema({
   lastName: String,
   company: String,
   name: String,
-  address: Address.schema,
+  address: String,
   phone: String,
   work: String,
   extension: String,
