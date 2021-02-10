@@ -12,6 +12,7 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -22,9 +23,16 @@ const UserSchema = new Schema({
     ref: 'Role',
     required: true,
   },
-  initials: String,
+  initials: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   emailPassword: String,
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   private: Boolean,
   createdAt: {
     type: Date,
@@ -56,6 +64,7 @@ UserSchema.statics = {
    */
   get(id) {
     return this.findById(id)
+      .select('name email initials role')
       .exec()
       .then((user) => {
         if (user) {
