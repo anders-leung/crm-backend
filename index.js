@@ -16,7 +16,8 @@ mongoose.Promise = Promise;
 // connect to mongo db
 const mongoUri = config.mongo.host;
 mongoose.connect(mongoUri, { useUnifiedTopology: true, useNewUrlParser: true });
-mongoose.connection.on('error', () => {
+mongoose.connection.on('error', (error) => {
+  console.log('error: ', error);
   throw new Error(`unable to connect to database: ${mongoUri}`);
 });
 
