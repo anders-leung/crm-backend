@@ -16,6 +16,8 @@ module.exports = {
       email: Joi.string().required(),
       password: Joi.string().required(),
       role: Joi.string().required(),
+      name: Joi.string().required(),
+      initials: Joi.string().required(),
     },
   },
 
