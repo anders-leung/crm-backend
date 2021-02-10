@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const options = require('./options');
 const users = require('./users');
 const roles = require('./roles');
 
@@ -24,6 +25,7 @@ module.exports = {
     body: Joi.object().required(),
   },
 
+  options,
   users,
   roles,
 };

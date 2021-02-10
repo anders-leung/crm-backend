@@ -10,17 +10,17 @@ router.route('/')
   .get(validate(paramValidation.list), roleCtrl.list)
 
   /** POST /roles - Create new role */
-  .post(validate(paramValidation.role.create), roleCtrl.create);
+  .post(validate(paramValidation.roles.create), roleCtrl.create);
 
 router.route('/:roleId')
   /** GET /roles/:roleId - Get role */
   .get(roleCtrl.get)
 
   /** PUT /roles/:roleId - Update role */
-  .put(validate(paramValidation.role.update), roleCtrl.update)
+  .put(validate(paramValidation.roles.update), roleCtrl.update)
 
   /** DELETE /roles/:roleId - Delete role */
-  .delete(validate(paramValidation.role.delete), roleCtrl.remove);
+  .delete(validate(paramValidation.roles.delete), roleCtrl.remove);
 
 /** Load role when API with roleId route parameter is hit */
 router.param('roleId', roleCtrl.load);
