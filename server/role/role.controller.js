@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const httpStatus = require('http-status');
+const APIError = require('../helpers/APIError');
 const Role = require('./role.model');
 const Job = require('../job/job.model');
 
@@ -7,10 +9,10 @@ const setupQuery = require('../helpers/setupQuery');
 const saltRounds = 10;
 
 /**
- * Create new user
- * @property {string} req.body.email - The email of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
- * @returns {User}
+ * Create new role
+ * @property {string} req.body.email - The email of role.
+ * @property {string} req.body.mobileNumber - The mobileNumber of role.
+ * @returns {role}
  */
 const create = (req, res, next) => {
   const { body } = req;
@@ -19,24 +21,24 @@ const create = (req, res, next) => {
   role.access = access.split(',').map(route => route.trim());
 
   role.save()
-    .then(savedUser => res.json(savedUser))
+    .then(savedrole => res.json(savedrole))
     .catch(next);
 };
 
 /**
- * Get user
- * @returns {User}
+ * Get role
+ * @returns {role}
  */
-const get = (req, res) => res.json(req.user);
+const get = (req, res) => res.json(req.role);
 
 /**
- * Get user's jobs.
- * @property {number} req.query.skip - Number of users to be skipped.
- * @property {number} req.query.limit - Limit number of users to be returned.
- * @returns {User[]}
+ * Get role's jobs.
+ * @property {number} req.query.skip - Number of roles to be skipped.
+ * @property {number} req.query.limit - Limit number of roles to be returned.
+ * @returns {role[]}
  */
 const jobs = (req, res, next) => {
-  const { user: { _id } } = req;
+  const { role: { _id } } = req;
   const query = {
     $or: [
       { preparer: _id },
@@ -51,10 +53,10 @@ const jobs = (req, res, next) => {
 };
 
 /**
- * Get user list.
- * @property {number} req.query.skip - Number of users to be skipped.
- * @property {number} req.query.limit - Limit number of users to be returned.
- * @returns {User[]}
+ * Get role list.
+ * @property {number} req.query.skip - Number of roles to be skipped.
+ * @property {number} req.query.limit - Limit number of roles to be returned.
+ * @returns {role[]}
  */
 const list = (req, res, next) => {
   const { query, select } = setupQuery(req);
@@ -62,40 +64,43 @@ const list = (req, res, next) => {
   if (select && select.length > 0) find.select(select);
 
   find
-    .then(users => res.json(users))
+    .then(roles => res.json(roles))
     .catch(e => next(e));
 };
 
 /**
- * Load user and append to req.
+ * Load role and append to req.
  */
 const load = (req, res, next, id) => {
   Role.get(id)
-    .then((user) => {
-      req.user = user; // eslint-disable-line no-param-reassign
+    .then((role) => {
+      if (role._id.toString() === '602358696e1ac0683bfe51bb') {
+        throw new APIError('Cannot modify Administrator role', httpStatus.BAD_REQUEST, true);
+      }
+      req.role = role; // eslint-disable-line no-param-reassign
       return next();
     })
     .catch(e => next(e));
 };
 
 /**
- * Update existing user
- * @property {string} req.body.email - The email of user.
- * @property {string} req.body.password - The password of user.
- * @property {string} req.body.role - The role of user.
- * @returns {User}
+ * Update existing role
+ * @property {string} req.body.email - The email of role.
+ * @property {string} req.body.password - The password of role.
+ * @property {string} req.body.role - The role of role.
+ * @returns {role}
  */
 const update = (req, res, next) => {
-  const { user, body } = req;
+  const { role, body } = req;
 
   bcrypt.hash(body.password || '', saltRounds)
     .then((hash) => {
       if (body.password) body.password = hash;
       else delete body.password;
-      return Role.findByIdAndUpdate(user._id, body, { new: true })
+      return Role.findByIdAndUpdate(role._id, body, { new: true })
     })
-    .then((savedUser) => {
-      const result = savedUser.toObject()
+    .then((savedrole) => {
+      const result = savedrole.toObject()
       delete result.password; // eslint-disable-line no-param-reassign
       res.json(result);
     })
@@ -103,13 +108,13 @@ const update = (req, res, next) => {
 };
 
 /**
- * Delete user.
- * @returns {User}
+ * Delete role.
+ * @returns {role}
  */
 const remove = (req, res, next) => {
-  const user = req.user;
-  user.remove()
-    .then(deletedUser => res.json(deletedUser))
+  const role = req.role;
+  role.remove()
+    .then(deletedrole => res.json(deletedrole))
     .catch(e => next(e));
 };
 
