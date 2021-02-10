@@ -24,7 +24,12 @@ function login(req, res, next) {
     })
     .then(([user, match]) => {
       if (!match) throw err;
-      res.json(user);
+      const { name, initials, role } = user;
+      res.json({
+        name,
+        initials,
+        role,
+      });
     })
     .catch(next);
 }
