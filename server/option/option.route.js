@@ -7,10 +7,10 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/')
   /** GET /options - Get list of options */
-  .get(optionCtrl.list)
+  .get(validate(paramValidation.list), optionCtrl.list)
 
   /** POST /options - Create new option */
-  .post(validate(paramValidation.createService), optionCtrl.create);
+  .post(validate(paramValidation.option.create), optionCtrl.create);
 
 router.route('/options')
   /** GET /options - Get option variables for the frontend */
@@ -21,10 +21,10 @@ router.route('/:optionId')
   .get(optionCtrl.get)
 
   /** PUT /options/:optionId - Update option */
-  .put(optionCtrl.update)
+  .put(validate(paramValidation.option.update), optionCtrl.update)
 
   /** DELETE /options/:optionId - Delete option */
-  .delete(optionCtrl.remove);
+  .delete(validate(paramValidation.option.delete), optionCtrl.remove);
 
 /** Load option when API with optionId route parameter is hit */
 router.param('optionId', optionCtrl.load);

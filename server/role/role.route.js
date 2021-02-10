@@ -6,28 +6,23 @@ const roleCtrl = require('./role.controller');
 const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/')
-  /** GET /users - Get list of users */
+  /** GET /roles - Get list of roles */
   .get(validate(paramValidation.list), roleCtrl.list)
 
-  /** POST /users - Create new user */
-  .post(validate(paramValidation.createRole), roleCtrl.create);
+  /** POST /roles - Create new role */
+  .post(validate(paramValidation.role.create), roleCtrl.create);
 
 router.route('/:roleId')
-  /** GET /users/:userId - Get user */
+  /** GET /roles/:roleId - Get role */
   .get(roleCtrl.get)
 
-  /** PUT /users/:userId - Update user */
-  .put(validate(paramValidation.updateUser), roleCtrl.update)
+  /** PUT /roles/:roleId - Update role */
+  .put(validate(paramValidation.role.update), roleCtrl.update)
 
-  /** DELETE /users/:userId - Delete user */
-  .delete(roleCtrl.remove);
+  /** DELETE /roles/:roleId - Delete role */
+  .delete(validate(paramValidation.role.delete), roleCtrl.remove);
 
-// TODO: Enable this maybe down the road when you think of how to do this better
-// router.route('/:userId/jobs')
-//   /** GET /users/:userId - Get all of the user's jobs */
-//   .get(userCtrl.jobs);
-
-/** Load user when API with userId route parameter is hit */
+/** Load role when API with roleId route parameter is hit */
 router.param('roleId', roleCtrl.load);
 
 module.exports = router;
