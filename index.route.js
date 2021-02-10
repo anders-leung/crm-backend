@@ -4,7 +4,7 @@ const authRoutes = require('./server/auth/auth.route');
 const clientRoutes = require('./server/client/client.route');
 const optionRoutes = require('./server/option/option.route');
 const jobRoutes = require('./server/job/job.route');
-const insuranceRoutes = require('./server/insurance/insurance.route');
+const roleRoutes = require('./server/role/role.route');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -30,7 +30,7 @@ router.use('/options', optionRoutes);
 // mount job routes at /job
 router.use('/jobs', jobRoutes);
 
-// mount job routes at /insurances
-router.use('/insurances', insuranceRoutes);
+// mount job routes at /job
+router.use('/roles', roleRoutes);
 
 module.exports = router;

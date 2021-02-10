@@ -6,28 +6,9 @@ const APIError = require('../helpers/APIError');
 /**
  * User Schema
  */
-const UserSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    match: [/(@holliswealth.com)$/, 'The value of path {PATH} ({VALUE}) is not a valid email.'],
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    required: true,
-  },
-  initials: String,
-  emailPassword: String,
+const RoleSchema = new mongoose.Schema({
   name: String,
-  private: Boolean,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  access: [String],
 });
 
 /**
@@ -40,13 +21,13 @@ const UserSchema = new mongoose.Schema({
 /**
  * Methods
  */
-UserSchema.method({
+RoleSchema.method({
 });
 
 /**
  * Statics
  */
-UserSchema.statics = {
+RoleSchema.statics = {
   /**
    * Get user
    * @param {ObjectId} id - The objectId of user.
@@ -59,7 +40,7 @@ UserSchema.statics = {
         if (user) {
           return user;
         }
-        const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
+        const err = new APIError('No such role exists!', httpStatus.NOT_FOUND);
         return Promise.reject(err);
       });
   },
@@ -72,20 +53,9 @@ UserSchema.statics = {
    */
   list({ skip = 0, limit = 50 } = {}) {
     return this.find()
-      .sort({ createdAt: -1 })
+      .sort({ name: -1 })
       .skip(+skip)
       .limit(+limit)
-      .exec();
-  },
-
-  /**
-   * List all public users, excluding private hidden users
-   * @returns {Promise<User[]}
-   */
-  public() {
-    return this.find({ private: { $ne: true } })
-      .select('name initials email')
-      .sort({ initials: 1 })
       .exec();
   },
 };
@@ -93,4 +63,4 @@ UserSchema.statics = {
 /**
  * @typedef User
  */
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Role', RoleSchema);
