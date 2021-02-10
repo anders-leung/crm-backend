@@ -16,6 +16,7 @@ function login(req, res, next) {
   const query = { email };
 
   User.findOne(query)
+    .populate('role')
     .then((user) => {
       if (!user) throw err;
       const promises = [user, bcrypt.compare(password, user.password)];

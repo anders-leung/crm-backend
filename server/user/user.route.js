@@ -12,6 +12,9 @@ router.route('/')
   /** POST /users - Create new user */
   .post(validate(paramValidation.createUser), userCtrl.create);
 
+router.route('/options')
+  .get(userCtrl.options);
+
 router.route('/:userId')
   /** GET /users/:userId - Get user */
   .get(userCtrl.get)

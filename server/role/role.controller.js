@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('./role.model');
+const Role = require('./role.model');
 const Job = require('../job/job.model');
 
 const setupQuery = require('../helpers/setupQuery');
@@ -14,9 +14,11 @@ const saltRounds = 10;
  */
 const create = (req, res, next) => {
   const { body } = req;
-  const user = new User(body);
+  const { access } = body;
+  const role = new Role(body);
+  role.access = access.split(',').map(route => route.trim());
 
-  user.save()
+  role.save()
     .then(savedUser => res.json(savedUser))
     .catch(next);
 };
@@ -56,7 +58,7 @@ const jobs = (req, res, next) => {
  */
 const list = (req, res, next) => {
   const { query, select } = setupQuery(req);
-  const find = User.find(query);
+  const find = Role.find(query);
   if (select && select.length > 0) find.select(select);
 
   find
@@ -68,7 +70,7 @@ const list = (req, res, next) => {
  * Load user and append to req.
  */
 const load = (req, res, next, id) => {
-  User.get(id)
+  Role.get(id)
     .then((user) => {
       req.user = user; // eslint-disable-line no-param-reassign
       return next();
@@ -90,7 +92,7 @@ const update = (req, res, next) => {
     .then((hash) => {
       if (body.password) body.password = hash;
       else delete body.password;
-      return User.findByIdAndUpdate(user._id, body, { new: true })
+      return Role.findByIdAndUpdate(user._id, body, { new: true })
     })
     .then((savedUser) => {
       const result = savedUser.toObject()

@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('./user.model');
+const Role = require('../role/role.model');
 const Job = require('../job/job.model');
 
 const setupQuery = require('../helpers/setupQuery');
@@ -56,7 +57,7 @@ const jobs = (req, res, next) => {
  */
 const list = (req, res, next) => {
   const { query, select } = setupQuery(req);
-  const find = User.find(query);
+  const find = User.find(query).populate('role');
   if (select && select.length > 0) find.select(select);
 
   find
@@ -76,6 +77,17 @@ const load = (req, res, next, id) => {
     .catch(e => next(e));
 };
 
+const options = (req, res, next) => {
+  const data = {};
+
+  Role.find()
+    .then((roles) => {
+      data.roles = roles.map(role => ({ label: role.name, value: role._id }));
+      res.json(data);
+    })
+    .catch(next);
+};
+
 /**
  * Update existing user
  * @property {string} req.body.email - The email of user.
@@ -85,8 +97,9 @@ const load = (req, res, next, id) => {
  */
 const update = (req, res, next) => {
   const { user, body } = req;
+  const password = body.password || body.emailPassword || '';
 
-  bcrypt.hash(body.password || '', saltRounds)
+  bcrypt.hash(password, saltRounds)
     .then((hash) => {
       if (body.password) body.password = hash;
       else delete body.password;
@@ -117,6 +130,7 @@ module.exports = {
   jobs,
   list,
   load,
+  options,
   update,
   remove,
 };

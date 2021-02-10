@@ -2,12 +2,35 @@ const Promise = require('bluebird');
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const APIError = require('../helpers/APIError');
-const userSchema = require('./user.schema');
+
+const { Schema } = mongoose;
 
 /**
  * User Schema
  */
-const UserSchema = new mongoose.Schema(userSchema);
+const UserSchema = new Schema({
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: Schema.Types.ObjectId,
+    ref: 'Role',
+    required: true,
+  },
+  initials: String,
+  emailPassword: String,
+  name: String,
+  private: Boolean,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 /**
  * Add your

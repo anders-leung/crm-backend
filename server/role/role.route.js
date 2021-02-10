@@ -10,9 +10,9 @@ router.route('/')
   .get(validate(paramValidation.list), roleCtrl.list)
 
   /** POST /users - Create new user */
-  .post(validate(paramValidation.createUser), roleCtrl.create);
+  .post(validate(paramValidation.createRole), roleCtrl.create);
 
-router.route('/:userId')
+router.route('/:roleId')
   /** GET /users/:userId - Get user */
   .get(roleCtrl.get)
 
@@ -28,6 +28,6 @@ router.route('/:userId')
 //   .get(userCtrl.jobs);
 
 /** Load user when API with userId route parameter is hit */
-router.param('userId', roleCtrl.load);
+router.param('roleId', roleCtrl.load);
 
 module.exports = router;

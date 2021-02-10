@@ -46,4 +46,11 @@ module.exports = {
       position: Joi.number().required(),
     },
   },
+
+  createRole: {
+    body: {
+      name: Joi.string().required(),
+      access: Joi.string().required(),
+    },
+  },
 };
