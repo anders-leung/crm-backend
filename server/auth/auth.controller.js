@@ -26,6 +26,7 @@ function login(req, res, next) {
       if (!match) throw err;
       const { name, initials, role } = user;
       res.json({
+        email: user.email,
         name,
         initials,
         role,

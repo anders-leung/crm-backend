@@ -2,9 +2,14 @@ const httpStatus = require('http-status');
 const APIError = require('../helpers/APIError');
 const Role = require('./role.model');
 const Job = require('../job/job.model');
-
 const setupQuery = require('../helpers/setupQuery');
 
+const parseAccess = (access) => {
+  const tokens = access.split(',');
+  const filtered = tokens.filter(token => token.trim());
+  const trimmed = filtered.map(route => route.trim());
+  return trimmed;
+};
 
 /**
  * Create new role
@@ -16,7 +21,7 @@ const create = (req, res, next) => {
   const { body } = req;
   const { access } = body;
   const role = new Role(body);
-  role.access = access.split(',').map(route => route.trim());
+  role.access = parseAccess(access);
 
   role.save()
     .then(savedRole => res.json(savedRole))
@@ -91,7 +96,7 @@ const load = (req, res, next, id) => {
 const update = (req, res, next) => {
   const { role, body } = req;
   const { access } = body;
-  if (access) body.access = access.split(',').map(route => route.trim());
+  if (access) body.access = parseAccess(access);
 
   Role.findByIdAndUpdate(role._id, body, { new: true })
     .then((savedRole) => {
@@ -109,7 +114,7 @@ const update = (req, res, next) => {
 const remove = (req, res, next) => {
   const role = req.role;
   role.remove()
-    .then(deletedrole => res.json(deletedrole))
+    .then(deletedRole => res.json(deletedRole))
     .catch(e => next(e));
 };
 

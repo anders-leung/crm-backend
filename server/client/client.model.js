@@ -6,9 +6,13 @@ const APIError = require('../helpers/APIError');
 
 const Schema = mongoose.Schema;
 const ClientSchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   phone: String,
   email: String,
+  notified: Date,
 });
 
 /**

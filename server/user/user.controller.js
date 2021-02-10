@@ -123,9 +123,14 @@ const update = (req, res, next) => {
       return User.findByIdAndUpdate(user._id, body, { new: true });
     })
     .then((savedUser) => {
-      const result = savedUser.toObject();
-      delete result.password; // eslint-disable-line no-param-reassign
-      res.json(result);
+      const { name, email, role, initials } = savedUser;
+      res.json({
+        name,
+        email,
+        role,
+        initials,
+        private: savedUser.private,
+      });
     })
     .catch(e => next(e));
 };
