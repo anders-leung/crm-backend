@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const httpStatus = require('http-status');
-const APIError = require('../../helpers/APIError');
+const APIError = require('../helpers/APIError');
 const User = require('./user.model');
 const Role = require('../role/role.model');
 const Job = require('../job/job.model');
@@ -25,7 +25,15 @@ const create = (req, res, next) => {
       return user.save();
     })
     .then(savedUser => res.json(savedUser))
-    .catch(next);
+    .catch((err) => {
+      const { code, keyValue } = err;
+      if (code === 11000) {
+        const [[key, value]] = Object.entries(keyValue);
+        const error = new APIError(`The ${key} ${value} already exists`, httpStatus.CONFLICT, true);
+        return next(error);
+      }
+      return next(err);
+    });
 };
 
 /**
