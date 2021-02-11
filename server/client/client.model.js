@@ -13,6 +13,7 @@ const ClientSchema = new Schema({
   phone: String,
   email: String,
   notified: Date,
+  dynamic: Object,
 });
 
 /**
