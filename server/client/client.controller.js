@@ -79,21 +79,16 @@ const remove = (req, res, next) => {
 const options = (req, res, next) => {
   const data = {};
   const promises = [
-    Client.find(),
-    Client.distinct('group'),
     User.find(),
     Option.find(),
   ];
 
   Promise.all(promises)
-    .then(([clients, groups, users, allOptions]) => {
-      data.clients = clients.map(client => ({ label: client.clientName, value: client._id }));
-      data.groups = groups;
-      data.users = users.map(user => ({ label: user.initials, value: user._id }));
+    .then(([users, allOptions]) => {
+      data['User Responsible'] = users.map(user => ({ label: user.initials, value: user._id }));
       allOptions.forEach((option) => {
         const { _id, name, type } = option;
-        const key = `${type.toLowerCase()}s`;
-        data[key] = (data[key] || []).concat({ label: name, value: _id });
+        data[type] = (data[type] || []).concat({ label: name, value: _id });
       });
       res.json(data);
     })
