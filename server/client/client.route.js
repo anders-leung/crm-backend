@@ -10,7 +10,7 @@ router.route('/')
   .get(validate(paramValidation.list), clientCtrl.list)
 
   /** POST /clients - Create new client */
-  .post(validate(paramValidation.saveObject), clientCtrl.create);
+  .post(validate(paramValidation.clients.save), clientCtrl.create);
 
 router.route('/options')
   /** GET /clients/options - Get client */
@@ -24,9 +24,9 @@ router.route('/:clientId')
   /** GET /clients/:clientId - Get client */
   .get(clientCtrl.get)
   /** PUT /clients/:clientId - Update client */
-  .put(validate(paramValidation.saveObject), clientCtrl.update)
+  .put(validate(paramValidation.update('client')), clientCtrl.update)
   /** DELETE /clients/:clientId - Delete client */
-  .delete(clientCtrl.remove);
+  .delete(validate(paramValidation.delete('client')), clientCtrl.remove);
 
 /** Load client when API with clientId route parameter is hit */
 router.param('clientId', clientCtrl.load);

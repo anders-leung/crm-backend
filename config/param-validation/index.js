@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const helpers = require('./helpers');
 const options = require('./options');
+const clients = require('./clients');
 const users = require('./users');
 const roles = require('./roles');
 
@@ -21,12 +22,23 @@ module.exports = {
     },
   },
 
-  // POST /clients
-  saveObject: {
+  // POST /*
+  update: model => ({
     body: Joi.object().required(),
-  },
+    params: {
+      [`${model}Id`]: Joi.string().hex().required(),
+    },
+  }),
+
+  // DELETE /*
+  delete: model => ({
+    params: {
+      [`${model}Id`]: Joi.string().hex().required(),
+    },
+  }),
 
   options,
+  clients,
   users,
   roles,
 };

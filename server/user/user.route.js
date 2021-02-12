@@ -10,7 +10,7 @@ router.route('/')
   .get(validate(paramValidation.list), userCtrl.list)
 
   /** POST /users - Create new user */
-  .post(validate(paramValidation.users.create), userCtrl.create);
+  .post(validate(paramValidation.users.save), userCtrl.create);
 
 router.route('/options')
   .get(userCtrl.options);
@@ -20,7 +20,7 @@ router.route('/:userId')
   .get(userCtrl.get)
 
   /** PUT /users/:userId - Update user */
-  .put(validate(paramValidation.users.update), userCtrl.update)
+  .put(validate(paramValidation.update('user')), userCtrl.update)
 
   /** DELETE /users/:userId - Delete user */
   .delete(userCtrl.remove);

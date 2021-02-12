@@ -21,10 +21,10 @@ router.route('/:optionId')
   .get(optionCtrl.get)
 
   /** PUT /options/:optionId - Update option */
-  .put(validate(paramValidation.options.update), optionCtrl.update)
+  .put(validate(paramValidation.update('option')), optionCtrl.update)
 
   /** DELETE /options/:optionId - Delete option */
-  .delete(validate(paramValidation.options.delete), optionCtrl.remove);
+  .delete(validate(paramValidation.delete('option')), optionCtrl.remove);
 
 /** Load option when API with optionId route parameter is hit */
 router.param('optionId', optionCtrl.load);
