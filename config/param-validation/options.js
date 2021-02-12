@@ -1,12 +1,11 @@
 const Joi = require('joi');
+const helpers = require('./helpers');
 
 module.exports = {
   // POST /options
   create: {
     body: {
-      name: Joi.string()
-        .required()
-        .regex(/^[A-z\s]+$/),
+      name: helpers.lettersAndSpaceValidation('name'),
       position: Joi.number().required(),
     },
   },

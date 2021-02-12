@@ -1,13 +1,14 @@
 const Joi = require('joi');
+const helpers = require('./helpers');
 
 module.exports = {
   // POST /users
   create: {
     body: {
-      email: Joi.string().required(),
+      email: helpers.emailValidation,
       password: Joi.string().required(),
       role: Joi.string().hex().required(),
-      name: Joi.string().required(),
+      name: helpers.lettersAndSpaceValidation('name'),
       initials: Joi.string().required(),
     },
   },

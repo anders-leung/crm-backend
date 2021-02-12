@@ -1,10 +1,8 @@
 const Joi = require('joi');
+const helpers = require('./helpers');
 const options = require('./options');
 const users = require('./users');
 const roles = require('./roles');
-
-// eslint-disable-next-line no-useless-escape, max-len
-const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
 module.exports = {
   // GET /*
@@ -18,17 +16,7 @@ module.exports = {
   // POST /auth/login
   login: {
     body: {
-      email: Joi.string()
-        .regex(emailRegex)
-        .required()
-        .error(errors => errors.map((error) => {
-          switch (error.type) {
-            case 'any.required':
-              return { message: '"email" is required' };
-            default:
-              return { message: '"email" is not a valid email' };
-          }
-        })),
+      email: helpers.emailValidation,
       password: Joi.string().required(),
     },
   },
