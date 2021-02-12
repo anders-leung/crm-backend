@@ -4,7 +4,9 @@ module.exports = {
   // POST /options
   create: {
     body: {
-      name: Joi.string().required(),
+      name: Joi.string()
+        .required()
+        .regex(/^[A-z\s]+$/),
       position: Joi.number().required(),
     },
   },
