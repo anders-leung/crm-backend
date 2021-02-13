@@ -24,12 +24,13 @@ function login(req, res, next) {
     })
     .then(([user, match]) => {
       if (!match) throw err;
-      const { name, initials, role } = user;
+      const { _id, name, initials, role } = user;
       res.json({
-        email: user.email,
+        _id,
         name,
-        initials,
+        email,
         role,
+        initials,
       });
     })
     .catch(next);

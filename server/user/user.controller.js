@@ -123,8 +123,9 @@ const update = (req, res, next) => {
       return User.findByIdAndUpdate(user._id, body, { new: true });
     })
     .then((savedUser) => {
-      const { name, email, role, initials } = savedUser;
+      const { _id, name, email, role, initials } = savedUser;
       res.json({
+        _id,
         name,
         email,
         role,
