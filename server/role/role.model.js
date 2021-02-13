@@ -7,8 +7,15 @@ const APIError = require('../helpers/APIError');
  * User Schema
  */
 const RoleSchema = new mongoose.Schema({
-  name: String,
-  access: [String],
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  access: {
+    type: [String],
+    required: true,
+  },
 });
 
 /**
