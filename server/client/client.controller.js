@@ -1,3 +1,4 @@
+const { set } = require('lodash');
 const Client = require('./client.model');
 const User = require('../user/user.model');
 const Option = require('../option/option.model');
@@ -60,7 +61,9 @@ const update = (req, res, next) => {
   const { body, client } = req;
   delete body._id;
 
-  Client.findByIdAndUpdate(client._id, body, { new: true })
+  Object.entries(body).forEach(([key, value]) => set(client, key, value));
+  client.validate()
+    .then(Client.findByIdAndUpdate(client._id, body, { new: true }))
     .then((updatedClient) => {
       res.json(updatedClient);
     })
