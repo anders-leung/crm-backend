@@ -12,7 +12,7 @@ const Job = require('../job/job.model');
 const Option = require('../option/option.model');
 const User = require('../user/user.model');
 const setupQuery = require('../helpers/setupQuery');
-const createInvoice = require('./pdf');
+// const createInvoice = require('./pdf');
 
 const analysis = (req, res, next) => {
   const { query } = setupQuery(req);
