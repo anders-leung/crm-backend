@@ -22,6 +22,10 @@ const envVarsSchema = Joi.object({
     }),
   MONGO_HOST: Joi.string().required()
     .description('Mongo DB host url'),
+  GST: Joi.number()
+    .default(0.05),
+  PST: Joi.number()
+    .default(0.07),
 }).unknown()
   .required();
 
@@ -38,6 +42,8 @@ const config = {
   mongo: {
     host: envVars.MONGO_HOST,
   },
+  gst: envVars.GST,
+  pst: envVars.PST,
 };
 
 module.exports = config;

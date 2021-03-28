@@ -20,6 +20,10 @@ router.route('/newClient')
   /** GET /clients/newClient */
   .get(clientCtrl.newClient);
 
+router.route('/generate')
+  /** GET /clients/newClient */
+  .post(clientCtrl.generate);
+
 router.route('/:clientId')
   /** GET /clients/:clientId - Get client */
   .get(clientCtrl.get)

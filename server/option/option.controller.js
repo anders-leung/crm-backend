@@ -30,10 +30,6 @@ const get = (req, res) => {
 const list = (req, res, next) => {
   const { query } = setupQuery(req);
   const sort = { position: 1 };
-  if (query.type === 'Industry') {
-    sort.name = 1;
-    delete sort.position;
-  }
 
   Option.find(query).sort(sort)
     .then(options => res.json(options))

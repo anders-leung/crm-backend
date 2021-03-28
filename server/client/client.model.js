@@ -13,7 +13,7 @@ const ClientSchema = new Schema({
   phone: {
     type: String,
     validate: {
-      validator: str => /\(d{3}\)-d{3}-d{4}/.test(str),
+      validator: str => /\(\d{3}\)\s\d{3}-\d{4}/.test(str),
     },
     message: props => `${props.value} is not a valid phone number.`,
   },
