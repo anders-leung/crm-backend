@@ -2,7 +2,7 @@ const express = require('express');
 const validate = require('express-validation');
 const paramValidation = require('../../config/param-validation');
 const invoiceCtrl = require('./invoice.controller');
-require('./notifications');
+// require('./notifications');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
